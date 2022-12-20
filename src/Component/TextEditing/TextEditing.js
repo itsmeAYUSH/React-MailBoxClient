@@ -25,14 +25,14 @@ const TextEditing = () => {
   };
   return (
     <React.Fragment>
-      <Container>
+      <Container fluid>
         <Row>
           <Col>
-            <Form className="pt-4" onSubmit={FormsubmitHandler}>
-              <Card style={{ width: "50rem" }} border="success">
-                <Card.Header>
+            <Form className="pt-1 pr=3" onSubmit={FormsubmitHandler}>
+              <Card style={{ width: "50rem" }}>
+                {/* <Card.Header>
                   <h3>welcome </h3>
-                </Card.Header>
+                </Card.Header> */}  
                 <Card.Body className="colours">
                   <Form.Group controlId="email">
                     <Form.Label>Email Address</Form.Label>
