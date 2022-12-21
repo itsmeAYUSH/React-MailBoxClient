@@ -6,7 +6,9 @@ import { Form } from "react-bootstrap";
 import "./TextEditing.css";
 import { useDispatch } from "react-redux";
 import { sendMailHandler } from "../../Store/Mail-thunk";
+import { MymailSliceAction } from "../../Store/MymailSlice";
 
+// import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 
 const TextEditing = () => {
   const Disptach = useDispatch();
@@ -15,13 +17,16 @@ const TextEditing = () => {
   const Enteredtext = React.createRef(null);
   const FormsubmitHandler = (event) => {
     event.preventDefault();
+
     const mailData = {
       email: Enteredemail.current.value,
       subject: Enteredsubject.current.value,
       text: Enteredtext.current.value,
+      From: localStorage.getItem("mailid"),
       readreceipt: false,
     };
     Disptach(sendMailHandler(mailData));
+    Disptach(MymailSliceAction.AddSenditemList(mailData));
     console.log(mailData, "TextEditing-FormsubmitHandler");
   };
   return (
@@ -29,11 +34,11 @@ const TextEditing = () => {
       <Container fluid>
         <Row>
           <Col>
-            <Form className="pt-1 pr=3" onSubmit={FormsubmitHandler}>
+            <Form className="pt-1  pr-3" onSubmit={FormsubmitHandler}>
               <Card style={{ width: "50rem" }}>
                 {/* <Card.Header>
                   <h3>welcome </h3>
-                </Card.Header> */}  
+                </Card.Header> */}
                 <Card.Body className="colours">
                   <Form.Group controlId="email">
                     <Form.Label>Email Address</Form.Label>
@@ -57,7 +62,6 @@ const TextEditing = () => {
                     <Form.Control as="textarea" rows={5} ref={Enteredtext} />
                   </Form.Group>
                 </Card.Body>
-
                 <Card.Footer>
                   <Editor
                     // editorState={editorState}

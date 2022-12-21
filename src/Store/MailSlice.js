@@ -6,6 +6,8 @@ const initialval = {
   items: [],
   count: 0,
   unread: 0,
+  messageView: {},
+  sentItem: [],
 };
 
 const MailSlice = createSlice({
@@ -22,7 +24,8 @@ const MailSlice = createSlice({
       console.log("getmail", state.unread);
     },
     addItem(state, action) {
-      state.items = action.payload;
+      state.items = action.payload.transformeddata;
+      state.sentItem = action.payload.sentItem;
       let Unreadmessage = 0;
       state.items.map((item) => {
         if (!item.readreceipt === true) {
@@ -32,6 +35,7 @@ const MailSlice = createSlice({
       });
       state.unread = Unreadmessage;
       console.log(state.unread);
+      console.log(action.payload.transformeddata);
     },
     updataItems(state, action) {
       state.count = state.count + 1;
@@ -45,6 +49,10 @@ const MailSlice = createSlice({
     DeleteItem(state, action) {
       state.count = state.count + 1;
       console.log("deleted");
+    },
+    addMessageViewinfo(state, action) {
+      state.messageView = action.payload;
+      console.log(" addMessageViewinfo", action.payload);
     },
   },
 });

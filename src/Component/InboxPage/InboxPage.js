@@ -13,6 +13,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UpdateList } from "../../Store/Mail-thunk";
 import MessageView from "./MessageView";
+import SentMessage from "../SendMessage/SendMessage";
 
 let isinitialState = true;
 
@@ -53,6 +54,12 @@ const InboxPage = () => {
               <ListGroup.Item className="m-1" action>
                 <Link to="#">sendMail</Link>
               </ListGroup.Item>
+
+              <Link to="sentmessage">
+                <ListGroup.Item className="m-1" action>
+                  sendMail
+                </ListGroup.Item>
+              </Link>
               <ListGroup.Item className="m-1" action>
                 DraftBox
               </ListGroup.Item>
