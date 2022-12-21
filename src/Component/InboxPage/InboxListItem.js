@@ -1,13 +1,17 @@
 import React from "react";
-import { ListGroup } from "react-bootstrap";
-
+import { Col, Container, ListGroup, Row } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { MailSliceAction } from "../../Store/MailSlice";
+
 import { UpdateList } from "../../Store/Mail-thunk";
+import Button from "react-bootstrap/Button";
+
+import { DeleteMail } from "../../Store/Mail-thunk";
+import { Link } from "react-router-dom";
 
 const InboxListItem = (props) => {
   const Dispatch = useDispatch();
-
+  // console.log(props);
+  //   console.log(Items);
   let Readreceipt;
   if (!props.readreceipt) {
     Readreceipt = "readreceipt";
@@ -20,20 +24,34 @@ const InboxListItem = (props) => {
     // Dispatch(MailSliceAction.updataItems(props));
     // console.log(props);
   };
+  const deleteHandler = () => {
+    Dispatch(DeleteMail(props.id));
+    console.log(props.id);
+  };
   return (
     <>
       <ListGroup.Item
         id={props.id}
-        className="m-1 "
+        className="m-.3 "
         variant="primary"
         key={props.id}
-        action
-        onClick={ListItemHandler}
       >
-        <div className="readreceiptbox">
-          <div className={`${Readreceipt}`}>.</div>
-          {props.email}
-        </div>
+        <Container>
+          <Row>
+            <Col className="pb-3">
+              <div className="readreceiptbox" onClick={ListItemHandler}>
+                <div className={`${Readreceipt}`}>.</div>
+                <Link to="mailview">{props.email}</Link>
+              </div>
+            </Col>
+
+            <Col md={1} style={{ height: "20px" }}>
+              <Button variant="secondary" onClick={deleteHandler}>
+                delete
+              </Button>
+            </Col>
+          </Row>
+        </Container>
       </ListGroup.Item>
     </>
   );

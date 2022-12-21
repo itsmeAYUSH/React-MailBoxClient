@@ -19,3 +19,11 @@
     position: relative;
     top: 50%;
   }
+  .indbox-cont {
+    display: flex;
+    justify-content: space-around;
+    max-height: 4vh;
+  }
+  .indbox-cont h5 {
+    color: rgb(13, 26, 145);
+  }

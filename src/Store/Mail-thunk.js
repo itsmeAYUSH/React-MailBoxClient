@@ -1,9 +1,8 @@
-import { MailSliceAction } from "./MailSlice";
 
+import { MailSliceAction } from "./MailSlice";
 export const sendMailHandler = (mailobj) => {
   return async (Disptach) => {
     let emailId = await mailobj.email.replace(/[&@.]/g, "");
-
     const sendingmail = async () => {
       const response = await fetch(
         `https://mailboxclient-a899b-default-rtdb.firebaseio.com/${emailId}.json`,
@@ -17,7 +16,7 @@ export const sendMailHandler = (mailobj) => {
       );
       const data = await response.json();
       if (data.error) {
-        throw new Error("failed");
+        throw new Error("faild");
       }
       //   console.log(data);
       return data;
@@ -31,7 +30,6 @@ export const sendMailHandler = (mailobj) => {
     }
   };
 };
-
 export const getmailHandler = () => {
   let emailId = localStorage.getItem("mailid").replace(/[&@.]/g, "");
   console.log(emailId);
@@ -48,12 +46,10 @@ export const getmailHandler = () => {
         console.log(data);
         throw new Error("faild");
       }
-      //   console.log(data);
       return data;
     };
     try {
       const data = await gettingMailList();
-
       // console.log(data);
       const transformeddata = [];
       for (const key in data) {
@@ -72,13 +68,6 @@ export const getmailHandler = () => {
 };
 
 export const UpdateList = (obj) => {
-  // const upadatedobj={
-  //   email: obj.email,
-  //   subject: obj.subject,
-
-  //   text: obj.text,
-  //   readreceipt: true,
-  // }
   return async (Dispatch) => {
     let emailId = localStorage.getItem("mailid").replace(/[&@.]/g, "");
 
@@ -106,8 +95,40 @@ export const UpdateList = (obj) => {
     };
     try {
       await UpdateEmailList();
+      Dispatch(MailSliceAction.updataItems());
     } catch (error) {
       console.log(error);
+    }
+  };
+};
+
+export const DeleteMail = (id) => {
+  return async (Dispatch) => {
+    let emailId = localStorage.getItem("mailid").replace(/[&@.]/g, "");
+
+    const DeletingMail = async () => {
+      const response = await fetch(
+        `https://mailboxclient-a899b-default-rtdb.firebaseio.com/${emailId}/${id}.json`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      if (data.error) {
+        console.log(data);
+        // throw new Error("faild");
+      }
+      return data;
+    };
+    try {
+      const data = await DeletingMail();
+      Dispatch(MailSliceAction.DeleteItem());
+    } catch (error) {
+      console.log(error);
+      Dispatch(MailSliceAction.DeleteItem());
     }
   };
 };
