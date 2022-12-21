@@ -43,7 +43,7 @@ const InboxListItem = (props) => {
             <Col className="pb-3">
               <div className="readreceiptbox" onClick={ListItemHandler}>
                 <div className={`${Readreceipt}`}>.</div>
-                <Link to="mailview">{props.email}</Link>
+                <Link to="mailview">{props.Form}</Link>
               </div>
             </Col>
 

@@ -10,31 +10,31 @@ import { useSelector, useDispatch } from "react-redux";
 import { UpdateMySentItem } from "./Store/Mail-thunk";
 import { useNavigate } from "react-router-dom";
 
-let loginlocalstore = localStorage.getItem("islogin") === "true";
-
-let islogin = localStorage.getItem("islogin") === "true";
-
 function App() {
+  let loginlocalstore = localStorage.getItem("islogin") === "true";
+  // console.log(loginlocalstore);
   const navi = useNavigate();
   const islogin = useSelector((state) => state.auth.islogin);
   const Dispatch = useDispatch();
   useEffect(() => {
-    if (islogin) {
+    if (loginlocalstore) {
       navi("/main/inboxlist");
-      console.log(" navi");
+      // console.log(" navi");
     } else {
       navi("/login");
     }
   }, [islogin]);
 
+  // const sentItem = useSelector((state) => state.mymail.sentItem);
   const sentItem = useSelector((state) => state.mymail.sentItem);
+  const sendcount = useSelector((state) => state.mymail.sendcount);
   useEffect(() => {
     if (sentItem.length > 0) {
       Dispatch(UpdateMySentItem(sentItem));
     }
 
     console.log(sentItem);
-  }, [sentItem]);
+  }, [sendcount]);
   console.log("app", sentItem);
   return (
     <div>
@@ -45,11 +45,8 @@ function App() {
           <Route path="text-edit" element={<TextEditing />} />
           <Route path="sentmessage" element={<SentMessage />} />
         </Route>
-        {loginlocalstore && (
-          <Route
-            path="/login"
-            element={<Navigate replace to="/main/inboxlist" />}
-          />
+        {!loginlocalstore && (
+          <Route element={<Navigate replace to="/login" />} />
         )}
         {/* <TextEditing></TextEditing> */}
       </Routes>

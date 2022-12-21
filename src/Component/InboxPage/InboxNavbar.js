@@ -2,9 +2,19 @@ import React from "react";
 import "./Inbox.css";
 import { Container, Form, Button, Row, Col, ListGroup } from "react-bootstrap";
 import { Navbar } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { AuthsliceAction } from "../../Store/Auth";
+import { useDispatch } from "react-redux";
 import { Nav } from "react-bootstrap";
 
 const InboxNavbar = () => {
+  const navigate = useNavigate();
+  const Dispatch = useDispatch();
+  const logoutHandler = () => {
+    localStorage.clear();
+    Dispatch(AuthsliceAction.Login());
+    navigate("/login");
+  };
   return (
     <>
       <Navbar bg="success">
@@ -27,6 +37,9 @@ const InboxNavbar = () => {
             <Button variant="primary">Search</Button>
           </Form>
         </Container>
+        <Button variant="warning" onClick={logoutHandler}>
+          LogOut
+        </Button>
       </Navbar>
     </>
   );

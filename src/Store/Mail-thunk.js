@@ -52,7 +52,7 @@ export const getmailHandler = () => {
     try {
       const data = await gettingMailList();
       const items = data.inbox;
-      const sentItem = data.sendItems;
+      let sentItem = data.sendItems;
       // console.log(data);
       const transformeddata = [];
       for (const key in items) {
@@ -63,7 +63,15 @@ export const getmailHandler = () => {
         transformeddata.push(Obj);
       }
       // console.log(transformeddata);
+      sentItem = sentItem.map((item, index) => {
+        return {
+          id: index,
+          ...item,
+        };
+      });
+
       Disptach(MailSliceAction.addItem({ transformeddata, sentItem }));
+      Disptach(MymailSliceAction.AddSenditemList(sentItem));
     } catch (error) {
       console.log("error message");
     }

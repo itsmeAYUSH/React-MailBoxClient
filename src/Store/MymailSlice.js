@@ -1,21 +1,26 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialmystate = { myupdateTriggerval: 0, sentItem: [], messageView: {} };
+const initialmystate = {
+  sentItem: [],
+  messageView: {},
+  sendcount: 0,
+};
 
 const MymailSlice = createSlice({
   name: "mymail",
   initialState: initialmystate,
   reducers: {
-    sendItemUpdateTrigger(state, action) {
-      state.myupdateTriggerval = state.myupdateTriggerval + 1;
-    },
     AddSenditemList(state, action) {
       const newItem = action.payload;
-
-      state.sentItem.push(newItem);
+      state.sentItem = action.payload;
     },
     addMessageViewinfo(state, action) {
       state.messageView = action.payload;
+    },
+    updateSendItem(state, action) {
+      state.sentItem = action.payload;
+      console.log(action.payload);
+      state.sendcount++;
     },
   },
 });
