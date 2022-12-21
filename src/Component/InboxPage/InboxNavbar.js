@@ -9,14 +9,14 @@ const InboxNavbar = () => {
     <>
       <Navbar bg="success" fluid>
         <Container fluid>
-          <img
+          {/* <img
             className="thum-img"
             src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/7e/Gmail_icon_%282020%29.svg/1200px-Gmail_icon_%282020%29.svg.png"
-          ></img>
+          ></img> */}
 
-          <Nav>
+          {/* <Nav>
             <Nav.Link>Home</Nav.Link>
-          </Nav>
+          </Nav> */}
           <Form className="d-flex pl-5" style={{ width: "600px" }}>
             <Form.Control
               type="text"

@@ -1,11 +1,24 @@
 import React from "react";
 import { ListGroup } from "react-bootstrap";
 
+import { useDispatch } from "react-redux";
+import { MailSliceAction } from "../../Store/MailSlice";
+import { UpdateList } from "../../Store/Mail-thunk";
+
 const InboxListItem = (props) => {
-  console.log(props);
-  //   console.log(Items);
+  const Dispatch = useDispatch();
+
+  let Readreceipt;
+  if (!props.readreceipt) {
+    Readreceipt = "readreceipt";
+  }
   const ListItemHandler = () => {
-    console.log(props);
+    if (props.readreceipt) {
+      return;
+    }
+    Dispatch(UpdateList(props));
+    // Dispatch(MailSliceAction.updataItems(props));
+    // console.log(props);
   };
   return (
     <>
@@ -17,7 +30,10 @@ const InboxListItem = (props) => {
         action
         onClick={ListItemHandler}
       >
-        {props.email}
+        <div className="readreceiptbox">
+          <div className={`${Readreceipt}`}>.</div>
+          {props.email}
+        </div>
       </ListGroup.Item>
     </>
   );

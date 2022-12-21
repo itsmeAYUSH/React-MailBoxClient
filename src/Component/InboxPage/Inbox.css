@@ -6,3 +6,16 @@
   .navbar {
     border-color: bisque;
   }
+  .readreceipt {
+    display: flex;
+    background-color: rgb(255, 176, 6);
+    width: 2%;
+    border-radius: 25px;
+    max-height: 1.3vh;
+  }
+  .readreceiptbox {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    top: 50%;
+  }

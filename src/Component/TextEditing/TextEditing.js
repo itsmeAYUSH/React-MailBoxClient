@@ -5,7 +5,7 @@ import { Row, Col, Container, Card, Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import "./TextEditing.css";
 import { useDispatch } from "react-redux";
-import { sendMailHandler } from "../../store/Mail-thunk";
+import { sendMailHandler } from "../../Store/Mail-thunk";
 
 
 const TextEditing = () => {
@@ -18,7 +18,8 @@ const TextEditing = () => {
     const mailData = {
       email: Enteredemail.current.value,
       subject: Enteredsubject.current.value,
-      text: Enteredsubject.current.value,
+      text: Enteredtext.current.value,
+      readreceipt: false,
     };
     Disptach(sendMailHandler(mailData));
     console.log(mailData, "TextEditing-FormsubmitHandler");

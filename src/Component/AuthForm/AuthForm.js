@@ -4,9 +4,9 @@ import React from "react";
 import { Col, Row, Container } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useRef } from "react";
-import { sendsignup, Sendlogin } from "../../store/Action-thunk";
-import { AuthsliceAction } from "../../store/Auth";
-import { UisliceAction } from "../../store/Uivisible";
+import { sendsignup, Sendlogin } from "../../Store/Action-thunk";
+import { AuthsliceAction } from "../../Store/Auth";
+import { UisliceAction } from "../../Store/Uivisible";
 
 const AuthForm = () => {
   const Disptach = useDispatch();
