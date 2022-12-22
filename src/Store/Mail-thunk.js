@@ -1,12 +1,14 @@
 import { MailSliceAction } from "./MailSlice";
-import MymailSliceAction from "./MymailSlice";
+import { MymailSliceAction } from "./MymailSlice";
 
+//sending mail
 export const sendMailHandler = (mailobj) => {
   return async (Disptach) => {
     let emailId = await mailobj.email.replace(/[&@.]/g, "");
+
     const sendingmail = async () => {
       const response = await fetch(
-        `https://mailboxclient-a899b-default-rtdb.firebaseio.com/${emailId}/inbox.json`,
+        `https://mailboxclient-961d7-default-rtdb.firebaseio.com/${emailId}/inbox.json`,
         {
           method: "POST",
           body: JSON.stringify(mailobj),
@@ -24,6 +26,7 @@ export const sendMailHandler = (mailobj) => {
     };
     try {
       await sendingmail();
+
       // Disptach(MailSliceAction.setSentData());
       //   console.log(data);
     } catch (error) {
@@ -31,30 +34,38 @@ export const sendMailHandler = (mailobj) => {
     }
   };
 };
+
+//get all mail
 export const getmailHandler = () => {
   let emailId = localStorage.getItem("mailid").replace(/[&@.]/g, "");
-  console.log(emailId);
+  // console.log(emailId);
   return async (Disptach) => {
     const gettingMailList = async () => {
       const response = await fetch(
-        `https://mailboxclient-a899b-default-rtdb.firebaseio.com/${emailId}.json`,
+        `https://mailboxclient-961d7-default-rtdb.firebaseio.com/${emailId}.json`,
         {
-          method: "Get",
+          method: "GET",
         }
       );
       const data = await response.json();
+      // if (data.inbox) {
+      //   return data;
+      // }
+      // console.log(data.inbox);
       if (data.error) {
         console.log(data);
         throw new Error("faild");
       }
+
       return data;
     };
     try {
       const data = await gettingMailList();
       const items = data.inbox;
-      let sentItem = data.sendItems;
-      // console.log(data);
+      let sentItem = data.sentItem;
+
       const transformeddata = [];
+
       for (const key in items) {
         const Obj = {
           id: key,
@@ -62,29 +73,25 @@ export const getmailHandler = () => {
         };
         transformeddata.push(Obj);
       }
-      // console.log(transformeddata);
-      sentItem = sentItem.map((item, index) => {
-        return {
-          id: index,
-          ...item,
-        };
-      });
-
-      Disptach(MailSliceAction.addItem({ transformeddata, sentItem }));
-      Disptach(MymailSliceAction.AddSenditemList(sentItem));
+      Disptach(MailSliceAction.addItem(transformeddata));
+      if (sentItem) {
+        Disptach(MymailSliceAction.AddSenditemList(sentItem));
+      }
     } catch (error) {
-      console.log("error message");
+      // console.log("error message");
+      // console.log(data);
     }
   };
 };
 
+//Read readreceipt update
 export const UpdateList = (obj) => {
   return async (Dispatch) => {
     let emailId = localStorage.getItem("mailid").replace(/[&@.]/g, "");
 
     const UpdateEmailList = async () => {
       const response = await fetch(
-        `https://mailboxclient-a899b-default-rtdb.firebaseio.com/${emailId}/inbox/${obj.id}.json`,
+        `https://mailboxclient-961d7-default-rtdb.firebaseio.com/${emailId}/inbox/${obj.id}.json`,
         {
           method: "PUT",
           body: JSON.stringify({
@@ -113,14 +120,14 @@ export const UpdateList = (obj) => {
     }
   };
 };
-
+//inbox mail delete
 export const DeleteMail = (id) => {
   return async (Dispatch) => {
     let emailId = localStorage.getItem("mailid").replace(/[&@.]/g, "");
 
     const DeletingMail = async () => {
       const response = await fetch(
-        `https://mailboxclient-a899b-default-rtdb.firebaseio.com/${emailId}/inbox/${id}.json`,
+        `https://mailboxclient-961d7-default-rtdb.firebaseio.com/${emailId}/inbox/${id}.json`,
         {
           method: "DELETE",
           headers: {
@@ -139,7 +146,7 @@ export const DeleteMail = (id) => {
       const data = await DeletingMail();
       Dispatch(MailSliceAction.DeleteItem());
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       Dispatch(MailSliceAction.DeleteItem());
     }
   };
@@ -152,7 +159,7 @@ export const UpdateMySentItem = (sentItem) => {
 
     const UpdatedingmySendingItem = async () => {
       const response = await fetch(
-        `https://mailboxclient-a899b-default-rtdb.firebaseio.com/${emailId}/sentItem/.json`,
+        `https://mailboxclient-961d7-default-rtdb.firebaseio.com/${emailId}/sentItem/.json`,
         {
           method: "PUT",
           body: JSON.stringify(sentItem),
@@ -168,10 +175,12 @@ export const UpdateMySentItem = (sentItem) => {
       return data;
     };
     try {
-      await UpdatedingmySendingItem();
+      const data = await UpdatedingmySendingItem();
+      console.log(data);
+
       // Dispatch( MymailSliceAction.sendItemUpdateTrigge());
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 };

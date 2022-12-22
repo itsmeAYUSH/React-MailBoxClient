@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Editor } from "react-draft-wysiwyg";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Row, Col, Container, Card, Button } from "react-bootstrap";
 import { Form } from "react-bootstrap";
 import "./TextEditing.css";
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch } from "react-redux";
 import { sendMailHandler } from "../../Store/Mail-thunk";
 import { MymailSliceAction } from "../../Store/MymailSlice";
-
+import { useSelector } from "react-redux";
+import Spinner from "react-bootstrap/Spinner";
 // import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 
 const TextEditing = () => {
@@ -16,9 +17,11 @@ const TextEditing = () => {
   const Enteredsubject = React.createRef(null);
   const Enteredtext = React.createRef(null);
   const sentItemlist = useSelector((state) => state.mymail.sentItem);
+
   const FormsubmitHandler = (event) => {
     event.preventDefault();
 
+    let uid = Date.now().toString(36) + Math.random().toString(36).substr(2);
     const mailData = {
       email: Enteredemail.current.value,
       subject: Enteredsubject.current.value,
@@ -26,16 +29,22 @@ const TextEditing = () => {
       From: localStorage.getItem("mailid"),
       readreceipt: false,
     };
+    if (mailData.email === "") {
+      return;
+    }
     Disptach(sendMailHandler(mailData));
     if (sentItemlist.length > 0) {
       let oldlist = sentItemlist;
-      let sentItem = [...oldlist, mailData];
+      let sentItem = [{ ...mailData, id: uid }, ...oldlist];
 
       console.log(sentItem);
       Disptach(MymailSliceAction.updateSendItem(sentItem));
     } else {
-      Disptach(MymailSliceAction.updateSendItem([mailData]));
+      Disptach(MymailSliceAction.updateSendItem([{ ...mailData, id: uid }]));
     }
+    Enteredemail.current.value = null;
+    Enteredsubject.current.value = null;
+    Enteredtext.current.value = null;
     console.log(mailData, "TextEditing-FormsubmitHandler");
   };
   return (
@@ -45,6 +54,9 @@ const TextEditing = () => {
           <Col>
             <Form className="pt-1  pr-3" onSubmit={FormsubmitHandler}>
               <Card style={{ width: "50rem" }}>
+                {/* {loadingspinner && (
+                  <Spinner animation="border" variant="primary" />
+                )} */}
                 {/* <Card.Header>
                   <h3>welcome </h3>
                 </Card.Header> */}
@@ -71,6 +83,7 @@ const TextEditing = () => {
                     <Form.Control as="textarea" rows={5} ref={Enteredtext} />
                   </Form.Group>
                 </Card.Body>
+
                 <Card.Footer>
                   <Editor
                     // editorState={editorState}
