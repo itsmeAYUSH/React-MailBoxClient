@@ -1,3 +1,3 @@
 # React-MailBoxClient
 
-mailboxclient-a899b.web.app
+https://mailboxclient-a899b.web.app/
