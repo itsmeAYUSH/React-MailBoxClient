@@ -7,11 +7,14 @@ import { sendsignup, Sendlogin } from "../../Store/Action-thunk";
 import { UisliceAction } from "../../Store/Uivisible";
 
 const AuthForm = () => {
+
   const Disptach = useDispatch();
   const islogin = useSelector((state) => state.uiauth.islogin);
+
   const Enteredemail = React.createRef(null);
   const EnteredPassword = React.createRef(null);
   const EnteredConfirmPassword = React.createRef(null);
+
   const onsubmitHandler = (event) => {
     event.preventDefault();
     const obj = {
@@ -19,6 +22,7 @@ const AuthForm = () => {
       password: EnteredPassword.current.value,
       returnSecureToken: true,
     };
+    
     if (obj.email === "" && obj.password === "") {
       return;
     }
